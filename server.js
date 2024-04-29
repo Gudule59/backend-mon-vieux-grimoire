@@ -2,7 +2,7 @@ const http = require('http');
 const mongoose = require('mongoose'); // Importez mongoose
 const app = require('./app');
 
-  mongoose.connect('mongodb+srv://Fabien:openclass@cluster0-pme76.mongodb.net/test?retryWrites=true&w=majority')
+  mongoose.connect('mongodb+srv://Fabien:openclass@cluster0.28idr2c.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
