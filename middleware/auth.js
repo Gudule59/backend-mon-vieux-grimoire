@@ -11,8 +11,10 @@ module.exports = (req, res, next) => {
        req.auth = {
            userId: userId
        };
-	next();
+       next();
    } catch(error) {
-       res.status(401).json({ error });
+       // Gestion de l'erreur de manière sécurisée
+       console.error('Error in JWT verification:', error);
+       res.status(401).json({ error: 'Unauthorized' });
    }
 };
