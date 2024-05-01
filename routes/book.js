@@ -10,7 +10,6 @@ router.get('/', bookCtrl.getAllBook);
 router.get('/:id', bookCtrl.getOneBook);
 
 router.post('/', auth, multer, bookCtrl.createBook);
-router.post('/:id', auth, multer, bookCtrl.createBook);  // à corriger
 router.post('/:id/rating', auth, multer, bookCtrl.rateBook); // à corriger
 //router.put('/:id', auth, multer, bookCtrl.modifyBook);
 //router.delete('/:id', auth, bookCtrl.deleteBook);

@@ -14,7 +14,7 @@ mongoose.connect('mongodb+srv://Fabien:openclass@cluster0.28idr2c.mongodb.net/?r
 
 
 app.use(cors());
-app.use(bodyParser.json());  // il etait a la fin  juste avant le module.exports et donc je verifier pas les elements envoyer
+app.use(bodyParser.json());  // il etait a la fin  juste avant le module.exports et donc les identifiants n'etaient pas convertis en un objet JavaScript au bon moment
 
 // Middleware CORS pour l'application
 app.use((req, res, next) => {
@@ -26,7 +26,7 @@ app.use((req, res, next) => {
 
 
 // Routes pour les ressources
-app.use('/api/book', bookRoutes);   // vu 
+app.use('/api/books', bookRoutes);   // vu 
 app.use('/api/auth', userRoutes); // vu 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 //app.use(logger);

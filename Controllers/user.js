@@ -32,12 +32,17 @@ exports.signup = (req, res, next) => {
                     if (!valid) {
                         return res.status(401).json({ message: 'Paire login/mot de passe incorrecte' });
                     }
+                    const token = jwt.sign(
+                        { userId: user._id, email: user.email },
+                        'SanytolNetoyantEucalyptus',
+                        { expiresIn: '1h' }
+                    );
                     res.status(200).json({
                         userId: user._id,
-                        token: 'TOKEN'
+                        token: token
                     });
                 })
                 .catch(error => res.status(500).json({ error }));
         })
         .catch(error => res.status(500).json({ error }));
- };
+};
