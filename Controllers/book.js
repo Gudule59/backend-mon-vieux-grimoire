@@ -1,6 +1,41 @@
 const Book = require('../models/Book');
 const fs = require('fs');
 
+
+exports.getAllBook = (req, res, next) => {
+    Book.find({
+      _id: req.params.id
+    }).then(
+      (book) => {
+        res.status(200).json(book);
+      }
+    ).catch(
+      (error) => {
+        res.status(404).json({
+          error: error
+        });
+      }
+    );
+  };
+
+exports.getOneBook = (req, res, next) => {
+    Book.findOne({
+      _id: req.params.id
+    }).then(
+      (book) => {
+        res.status(200).json(book);
+      }
+    ).catch(
+      (error) => {
+        res.status(404).json({
+          error: error
+        });
+      }
+    );
+  };
+  
+
+
 exports.createBook = (req, res, next) => {
   const bookObject = JSON.parse(req.body.book);
   delete bookObject._id;
@@ -15,8 +50,6 @@ exports.createBook = (req, res, next) => {
   .then(() => { res.status(201).json({message: 'Objet enregistré !'})})
   .catch(error => { res.status(400).json( { error })})
 };
-
-
 
 
 exports.rateBook = async (req, res) => {

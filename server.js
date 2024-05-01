@@ -1,16 +1,13 @@
 const http = require('http');
-const mongoose = require('mongoose'); // Importe mongoose
-const cors = require('cors'); // Importe le module CORS réponses aux requêtes provenant de tous les domaines
+//const cors = require('cors'); // Importe le module CORS réponses aux requêtes provenant de tous les domaines
 const app = require('./app');
 
-  mongoose.connect('mongodb+srv://Fabien:openclass@cluster0.28idr2c.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-  .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
+
 
 // utilisation du module CORS 
-  app.use(cors({
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Autorise les méthodes spécifiées
-  }));
+ // app.use(cors({
+   // methods: ['GET', 'POST', 'PUT', 'DELETE'], // Autorise les méthodes spécifiées
+  //}));
 
 
   const normalizePort = val => {
