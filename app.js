@@ -1,5 +1,6 @@
 const express = require ('express')
 const app = express();
+require('dotenv').config();
 const bodyParser = require ('body-parser')
 const mongoose = require('mongoose');
 const path = require('path');
@@ -8,10 +9,10 @@ const bookRoutes = require('./routes/book');  // vu
 const userRoutes = require('./routes/user'); // vu 
 
 
-mongoose.connect('mongodb+srv://Fabien:openclass@cluster0.28idr2c.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-.then(() => console.log('Connexion à MongoDB réussie !'))
-.catch(() => console.log('Connexion à MongoDB échouée !'));
 
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_CLUSTER}/${process.env.DB_NAME}?retryWrites=true&w=majority&appName=Cluster0`)
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 app.use(cors());
 app.use(bodyParser.json());  // il etait a la fin  juste avant le module.exports et donc les identifiants n'etaient pas convertis en un objet JavaScript au bon moment

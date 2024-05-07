@@ -3,7 +3,6 @@ const http = require('http');
 const app = require('./app');
 
 
-
 // utilisation du module CORS 
  // app.use(cors({
    // methods: ['GET', 'POST', 'PUT', 'DELETE'], // Autorise les méthodes spécifiées
