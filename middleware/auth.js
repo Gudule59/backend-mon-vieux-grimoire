@@ -1,6 +1,6 @@
 
 // Sert a verifier que le token envoyé par le front est correct
-require("dotenv").config();
+
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
  
