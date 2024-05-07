@@ -1,5 +1,6 @@
 
 const Book = require('../models/Book');
+const url = require('url');
 const fs = require('fs');
 
 
@@ -49,14 +50,43 @@ exports.getOneBook = (req, res, next) => {
 };
 
 
-
 exports.rateBook = async (req, res, next) => {
-  const { userId, grade } = req.body;
-  const { id } = req.params.id; 
-  console.log("ID du livre:", id);
+  try {
+    // Obtenez l'ID du livre à partir des paramètres d'URL
+    const bookId = req.params.id; 
+    const { userId, rating } = req.body;
 
- 
+    // Recherchez le livre dans la base de données
+    const book = await Book.findById(bookId);
+
+    if (!book) {
+      return res.status(404).json({ message: "Livre non trouvé." });
+    }
+
+    // Vérifiez si l'utilisateur a déjà noté ce livre
+    const hasUserRated = book.ratings.some(rating => rating.userId === userId);
+    if (hasUserRated) {
+      return res.status(400).json({ message: "L'utilisateur a déjà noté ce livre." });
+    }
+
+    // Ajoutez la nouvelle évaluation au livre
+    book.ratings.push({ userId, grade: rating });
+
+    // Recalculez la moyenne des évaluations
+    const totalRatings = book.ratings.length;
+    const sumRatings = book.ratings.reduce((acc, curr) => acc + curr.grade, 0);
+    book.averageRating = sumRatings / totalRatings;
+
+    // Enregistrez les modifications du livre dans la base de données
+    await book.save();
+
+    res.status(201).json({ message: "Évaluation ajoutée avec succès.", book });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erreur lors de l'ajout de l'évaluation." });
+  }
 };
+
 
 
 exports.getBestRatedBooks = async (req, res, next) => {
