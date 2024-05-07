@@ -28,7 +28,6 @@ app.use((req, res, next) => {
 // Routes pour les ressources
 app.use('/api/books', bookRoutes);   // vu 
 app.use('/api/auth', userRoutes); // vu 
-app.use('/api/ratings', bookRoutes); 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 //app.use(logger);
 
