@@ -1,4 +1,4 @@
-const Ratings = require('../models/Ratings');
+
 const Book = require('../models/Book');
 const fs = require('fs');
 
@@ -52,12 +52,17 @@ exports.getOneBook = (req, res, next) => {
   
 
 exports.rateBook = async (req, res) => {
-  const { _id } = req.params;
+  console.log(req.body)
+  const {bookId } = req.params;
+  console.log(req)
+  //console.log(req)
+  console.log(bookId)
   const { userId, grade } = req.body;
 
   try {
     // Vérifie si le livre existe
-    const book = await Book.findById(_id);
+    const book = await Book.findById(bookId);
+    console.log(book)
     if (!book) {
       return res.status(404).json({ message: "Livre non trouvé." });
     }
