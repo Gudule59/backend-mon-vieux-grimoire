@@ -49,20 +49,16 @@ exports.getOneBook = (req, res, next) => {
 };
 
 
-  
 
 exports.rateBook = async (req, res) => {
-  console.log(req.body)
-  const {bookId } = req.params;
-  console.log(req)
-  //console.log(req)
-  console.log(bookId)
   const { userId, grade } = req.body;
+  const { id } = req.params;
+  console.log("retour de req  " + "" + id)
+ 
 
   try {
     // Vérifie si le livre existe
-    const book = await Book.findById(bookId);
-    console.log(book)
+    const book = await Book.findById(id);
     if (!book) {
       return res.status(404).json({ message: "Livre non trouvé." });
     }
@@ -85,7 +81,7 @@ exports.rateBook = async (req, res) => {
     await book.save();
 
     // Enregistre la notation dans la nouvelle collection
-    await Ratings.create({ userId, bookId: _id, grade });
+    await Ratings.create({ userId, id, grade }); // Utilisez simplement `id` pour l'ID du livre
 
     res.status(201).json({ message: "Évaluation ajoutée avec succès.", book });
   } catch (error) {
@@ -93,6 +89,22 @@ exports.rateBook = async (req, res) => {
     res.status(500).json({ message: "Erreur lors de l'ajout de l'évaluation." });
   }
 };
+
+
+exports.getBestRatingBooks = async (req, res) => {
+  try {
+    // Récupérer les 3 livres avec les meilleures moyennes
+    const getBestRatingBooks = await Book.find()
+      .sort({ averageRating: -1 })
+      .limit(3);
+
+    res.status(200).json({ getBestRatingBooks });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erreur lors de la récupération des livres les mieux notés." });
+  }
+};
+
 
 exports.modifyBook = (req, res, next) => {
   const bookObject = req.file ? {
