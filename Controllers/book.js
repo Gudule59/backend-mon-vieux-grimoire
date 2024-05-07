@@ -50,7 +50,7 @@ exports.getOneBook = (req, res, next) => {
 
 
 
-exports.rateBook = async (req, res) => {
+exports.rateBook = async (req, res,next) => {
   const { userId, grade } = req.body;
   const { id } = req.params;
   console.log("retour de req  " + "" + id)
@@ -91,19 +91,18 @@ exports.rateBook = async (req, res) => {
 };
 
 
-exports.getBestRatingBooks = async (req, res) => {
-  try {
-    // Récupérer les 3 livres avec les meilleures moyennes
-    const getBestRatingBooks = await Book.find()
-      .sort({ averageRating: -1 })
-      .limit(3);
-
-    res.status(200).json({ getBestRatingBooks });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Erreur lors de la récupération des livres les mieux notés." });
-  }
+exports.getBestRatedBooks = async (req, res, next) => {
+  Book.find() 
+  .then((books) => {
+      res.status(200).json(books);
+  })
+  .catch((error) => {
+      res.status(404).json({ error: error });
+  });
 };
+
+
+
 
 
 exports.modifyBook = (req, res, next) => {

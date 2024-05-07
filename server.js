@@ -1,12 +1,7 @@
 const http = require('http');
-//const cors = require('cors'); // Importe le module CORS réponses aux requêtes provenant de tous les domaines
 const app = require('./app');
 
 
-// utilisation du module CORS 
- // app.use(cors({
-   // methods: ['GET', 'POST', 'PUT', 'DELETE'], // Autorise les méthodes spécifiées
-  //}));
 
 
   const normalizePort = val => {
