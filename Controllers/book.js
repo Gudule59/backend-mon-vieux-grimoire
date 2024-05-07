@@ -50,41 +50,31 @@ exports.getOneBook = (req, res, next) => {
 };
 
 
-exports.rateBook = async (req, res, next) => {
-  try {
-    // Obtenez l'ID du livre à partir des paramètres d'URL
-    const bookId = req.params.id; 
-    const { userId, rating } = req.body;
 
-    // Recherchez le livre dans la base de données
-    const book = await Book.findById(bookId);
-
-    if (!book) {
-      return res.status(404).json({ message: "Livre non trouvé." });
-    }
-
-    // Vérifiez si l'utilisateur a déjà noté ce livre
-    const hasUserRated = book.ratings.some(rating => rating.userId === userId);
-    if (hasUserRated) {
-      return res.status(400).json({ message: "L'utilisateur a déjà noté ce livre." });
-    }
-
-    // Ajoutez la nouvelle évaluation au livre
-    book.ratings.push({ userId, grade: rating });
-
-    // Recalculez la moyenne des évaluations
-    const totalRatings = book.ratings.length;
-    const sumRatings = book.ratings.reduce((acc, curr) => acc + curr.grade, 0);
-    book.averageRating = sumRatings / totalRatings;
-
-    // Enregistrez les modifications du livre dans la base de données
-    await book.save();
-
-    res.status(201).json({ message: "Évaluation ajoutée avec succès.", book });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Erreur lors de l'ajout de l'évaluation." });
-  }
+exports.createRatingBook = (req, res) => {
+  const userId = req.body.userId;
+  const grade = req.body.rating;
+  Book.findOne({ _id: req.params.id})
+      .then((book) => {
+          const userRating = book.ratings.find(rating => rating.userId === userId);
+          if (userRating) {
+             return res.status(400).json({message: "Vous n'êtes pas autorisé à noter ce livre"})
+          }
+          if (grade < 1 || grade > 5) {
+              return res.status(400).json({message: "Votre note n'est pas comprise entre 1 et 5"})
+          }
+          book.ratings.push({userId, grade });
+          const ratingCount = book.ratings.length;
+          const ratingSum = book.ratings.reduce((sum, rating) => sum + rating.grade, 0);
+          book.averageRating = ratingSum / ratingCount;
+          book.averageRating = parseFloat(book.averageRating.toFixed(1));
+          book.save()
+              .then((book) => {res.status(201).json(book)})
+              .catch(() => {res.status(400).json({message: "Votre note n'a pas pu être enregistré"})});
+      })
+      .catch ((error) => {
+          res.status(404).json({error});
+      })
 };
 
 
