@@ -50,7 +50,6 @@ exports.getOneBook = (req, res, next) => {
 };
 
 
-
 exports.createRatingBook = (req, res) => {
   const userId = req.body.userId;
   const grade = req.body.rating;
@@ -122,7 +121,7 @@ exports.modifyBook = (req, res, next) => {
               .catch(error => res.status(401).json({ error }));
       })
       .catch((error) => {
-          res.status(400).json({ error });
+          res.status(403).json({ error });
       });
 };
 
