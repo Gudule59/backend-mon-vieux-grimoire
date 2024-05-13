@@ -14,7 +14,6 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 
-
 app.use(cors());
 app.use(bodyParser.json());  // il etait a la fin  juste avant le module.exports et donc les identifiants n'etaient pas convertis en un objet JavaScript au bon moment
 
